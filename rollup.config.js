@@ -17,6 +17,9 @@ import sveltePreprocess from 'svelte-preprocess';
 const production = !process.env.ROLLUP_WATCH;
 const baseDir = 'build/admin';
 
+// Load variables from .env file
+config();
+
 export default {
   input: 'src/main.ts',
   output: {
@@ -28,11 +31,15 @@ export default {
   plugins: [
     // Handle environment variables
     replace({
-      // stringify the object
+      // stringify the object because only top level is allowed as object
       process: JSON.stringify({
         env: {
-          isProd: production,
-          ...config().parsed, // attached the .env config
+          DOMAIN_NAME: process.env.DOMAIN_NAME,
+          GITHUB_PROJECT: process.env.GITHUB_PROJECT,
+          GITHUB_HEAD_BRANCH: process.env.GITHUB_HEAD_BRANCH,
+          GITHUB_PROD_BRANCH: process.env.GITHUB_PROD_BRANCH,
+          GITHUB_API_URL: process.env.GITHUB_API_URL,
+          HUGO_THEME_NAME: process.env.HUGO_THEME_NAME,
         },
       }),
     }),
