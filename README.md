@@ -6,7 +6,9 @@ The site is built with [Hugo](https://gohugo.io/) and the admin management UI wi
 
 ## Usage
 
-1. Create your own repository with this project as a template.
+**DISCLAIMER**: instructions are written from memory and haven't been tested yet.
+
+1. Create your own repository with this project as a template by clicking `Use this template` button in the top part of this page.
 1. Set suitable values in `package.json` for name, version, license, description and so on.
 1. Set up environment variables: make a copy of `.env.sample` as `.env` and set the variables to match your project.
 1. Create branches for development and production, and for site development similar to "development" and "production" (matching the values you set in `.env`), e.g. `master`, `production`, `dev-content`, `dev-live`. Make sure the branches in the release script `scripts/release` are correct.
@@ -61,3 +63,7 @@ To release, i.e. update version, tag and push to production branch (no local bui
 ```
 ./scripts/release
 ```
+
+## Notes
+
+There are some issues with live reloading the svelte-side. It doesn't always load the content without manually refreshing the page.
