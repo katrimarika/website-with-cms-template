@@ -49,6 +49,7 @@
     "@types/marked": "^1.1.0",
     "dompurify": "^2.0.12",
     "gotrue-js": "^0.9.26",
+    "js-base64": "^3.4.5",
     "marked": "^1.1.1",
     "qs": "^6.9.4"
   }

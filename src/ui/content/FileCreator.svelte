@@ -1,9 +1,11 @@
 <script lang="ts">
   import { getContentContext } from '../../utils/content';
-  import { filenameLimit, notAsked, submitAlert } from '../../utils/data';
   import type { FileContent } from '../../utils/data';
+  import { filenameLimit, notAsked, submitAlert } from '../../utils/data';
   import {
     createSlug,
+    decodeFileContents,
+    encodeFileContents,
     fetchErrorMessage,
     useHugoTemplate,
   } from '../../utils/helpers';
@@ -42,7 +44,8 @@
   function useArchetype(data: FileContent | null, error?: string) {
     const slug = createSlug(title);
     if (data) {
-      const parsedContents = useHugoTemplate(atob(data.content), title, slug);
+      const decodedContents = decodeFileContents(data.content, submitAlert.set);
+      const parsedContents = useHugoTemplate(decodedContents, title, slug);
       contents = parsedContents;
     } else {
       submitAlert.set(error || 'Error in using archetype.');
@@ -120,8 +123,11 @@
   function onSubmit() {
     if (!!filename && filename.length <= filenameLimit) {
       loading = true;
-      // Make sure content has newline at end, base64 encode
-      const encodedContents = btoa(contents.replace(/[^\n]$/, '\n'));
+      const encodedContents = encodeFileContents(contents, submitAlert.set);
+      if (encodedContents === undefined) {
+        loading = false;
+        return;
+      }
       foldersContent
         .createFile(`${location}/${filename}.md`, encodedContents)
         .then((f) => {

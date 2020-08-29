@@ -1,8 +1,12 @@
 <script lang="ts">
   import { getContentContext } from '../../utils/content';
-  import { submitAlert } from '../../utils/data';
   import type { File, FileContent } from '../../utils/data';
-  import { fetchErrorMessage } from '../../utils/helpers';
+  import { submitAlert } from '../../utils/data';
+  import {
+    decodeFileContents,
+    encodeFileContents,
+    fetchErrorMessage,
+  } from '../../utils/helpers';
   import Button from '../components/Button.svelte';
   import LoadingWrapper from '../components/LoadingWrapper.svelte';
   import FileContentEditor from './FileContentEditor.svelte';
@@ -13,12 +17,16 @@
 
   const { filesContent } = getContentContext();
 
-  let value = atob(content.content);
+  let value = decodeFileContents(content.content, submitAlert.set);
   let loading = false;
 
   function onSubmit() {
     loading = true;
-    const encodedContents = btoa(value.replace(/[^\n]$/, '\n'));
+    const encodedContents = encodeFileContents(value, submitAlert.set);
+    if (encodedContents === undefined) {
+      loading = false;
+      return;
+    }
     filesContent
       .saveFile(item.path, content.sha, encodedContents)
       .then(() => {
@@ -32,7 +40,7 @@
   }
 
   function reset() {
-    value = atob(content.content);
+    value = decodeFileContents(content.content, submitAlert.set);
   }
 </script>
 

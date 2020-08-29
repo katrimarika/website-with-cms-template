@@ -1,4 +1,5 @@
 import { sanitize } from 'dompurify';
+import { decode, encode } from 'js-base64';
 import marked from 'marked';
 import { filenameLimit } from './data';
 
@@ -63,6 +64,31 @@ export async function fileToBase64(file: File) {
     };
     reader.onerror = (error) => reject(error);
   });
+}
+
+export function encodeFileContents(
+  value: string,
+  onError: (e: string) => void
+): string | undefined {
+  try {
+    // Make sure content has newline at end, base64 encode
+    return encode(value.replace(/[^\n]$/, '\n'));
+  } catch (e) {
+    onError('Failed to encode file contents.');
+    return;
+  }
+}
+
+export function decodeFileContents(
+  value: string,
+  onError: (e: string) => void
+): string {
+  try {
+    return decode(value);
+  } catch (e) {
+    onError('Failed to decode file contents.');
+    return '';
+  }
 }
 
 export function contentToHtml(content: string) {
