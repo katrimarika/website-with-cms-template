@@ -1,0 +1,54 @@
+#!/bin/bash
+
+$mainBranch="master"
+$productionBranch="production"
+
+# Checkout the main branch
+git checkout $mainBranch
+
+if [ "$(git diff)" != "" ]; then
+  echo "Found changes in working copy, exiting"
+  exit 1
+fi
+
+# Read the previous version from package.json
+oldVersion=`node -p "require('./package.json').version"`
+
+# Prompt version bump level and description
+echo "Give new version (previous $oldVersion):"
+read newVersion
+
+echo "Give version description:"
+read versionDescription
+
+# Change version in package.json and commit the change
+echo "Changing version in package.json..."
+node -p "var pkg = require('./package.json'); pkg.version='$newVersion'; JSON.stringify(pkg, null, 2)" > tmp.json
+mv tmp.json package.json
+
+# Commit the version change and tag it
+echo "Commiting and tagging v$newVersion \"$versionDescription\""
+git add package.json
+git commit --quiet -m "Version $newVersion: $versionDescription"
+
+# Commit the version change and tag it
+echo "Creating tag v$newVersion \"$versionDescription\""
+git tag -a "v$newVersion" -m "$versionDescription"
+
+# Push main branch and tags
+echo "Pushing changes to origin..."
+git push --quiet origin $mainBranch
+git push --quiet origin --tags
+
+# Checkout production, pull and merge main branch to it
+echo "Merging changes to production..."
+git checkout --quiet $productionBranch
+git pull --quiet 
+git merge --quiet $mainBranch
+
+# Push production and return to main branch
+echo "Pushing changes to production..."
+git push --quiet origin $productionBranch
+git checkout --quiet $mainBranch
+
+echo "DONE!"

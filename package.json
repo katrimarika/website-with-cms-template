@@ -1,0 +1,55 @@
+{
+  "name": "website-with-cms-template",
+  "description": "Hugo static website with Svelte Admin \"CMS\" using Netlify Identity",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.16.x <13",
+    "npm": ">=6.13 <7"
+  },
+  "scripts": {
+    "start:mgmt": "rollup -c -w",
+    "start:site": "hugo server -s site -w -d ../build",
+    "start": "npm run start:site & npm run start:mgmt",
+    "build:mgmt": "rm -rf build/admin && rollup -c",
+    "build:site": "hugo -s site -d ../build --cleanDestinationDir",
+    "build": "npm run build:site && npm run build:mgmt",
+    "add-content": "echo \"Give '<sectionname>/<filename>' (e.g. blog/new-1) to create a markdown file using archetypes:\" && read contentName && hugo -s site new \"$contentName.md\"",
+    "validate:mgmt": "svelte-check"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.0",
+    "@rollup/plugin-replace": "^2.3.3",
+    "@rollup/plugin-typescript": "^5.0.2",
+    "@tsconfig/svelte": "^1.0.0",
+    "@types/node": "^14.0.27",
+    "@types/qs": "^6.9.4",
+    "dotenv": "^8.2.0",
+    "htmlnano": "^0.2.6",
+    "posthtml": "^0.13.1",
+    "posthtml-hash": "^1.1.1",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.3.4",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.0.0",
+    "svelte-check": "^0.1.0",
+    "svelte-preprocess": "^4.0.0",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "@octokit/request": "^5.4.7",
+    "@types/dompurify": "^2.0.3",
+    "@types/marked": "^1.1.0",
+    "dompurify": "^2.0.12",
+    "gotrue-js": "^0.9.26",
+    "marked": "^1.1.1",
+    "qs": "^6.9.4"
+  }
+}

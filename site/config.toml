@@ -1,0 +1,9 @@
+baseURL = "/"
+languageCode = "en-us"
+title = ""
+theme = "my-theme"
+enableRobotsTXT = true
+disableKinds = ["sitemap", "taxonomy", "taxonomyTerm", "RSS"]
+
+[markup.goldmark.renderer]
+unsafe = true

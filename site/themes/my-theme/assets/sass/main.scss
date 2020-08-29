@@ -1,0 +1,131 @@
+@import 'fonts';
+@import 'variables';
+
+html {
+  font-family: $font-family;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $main-color;
+}
+
+body {
+  margin: 0;
+  background: $inverse-color;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+code {
+  font-family: $code-font-family;
+  font-weight: 400;
+  padding: 0.0625rem 0.125rem;
+}
+
+.container {
+  max-width: 700px; /* approx 90 chars */
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: $title-font-family;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+a {
+  color: $highlight-color;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: underline;
+  }
+}
+
+strong {
+  font-weight: 500;
+}
+
+body > header {
+  color: $highlight-color;
+
+  .container {
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  h1 {
+    margin: 0;
+
+    a {
+      color: inherit;
+
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+body > footer {
+  color: $highlight-color;
+  font-size: 0.875rem;
+
+  .container {
+    padding-top: 0.75rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
+main {
+  flex-grow: 1;
+
+  .container {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+  }
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+img:not(.icon) {
+  max-width: 100%;
+  margin: 1.5rem auto;
+  display: block;
+}
