@@ -25,6 +25,8 @@
       .publish(status.latestCommitSha)
       .then(() => {
         submitAlert.set(`Successfully published changes to ${prodBranch}.`);
+        // Refetch status
+        commitStatus.fetchData();
         loading = false;
       })
       .catch((e) => {
@@ -42,6 +44,8 @@
           .revert(status.baseCommitSha)
           .then(() => {
             submitAlert.set(`Successfully reverted changes in ${headBranch}.`);
+            // Refetch status
+            commitStatus.fetchData();
             loading = false;
           })
           .catch((e) => {
