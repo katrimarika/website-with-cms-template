@@ -1,7 +1,7 @@
 #!/bin/bash
 
-$mainBranch="master"
-$productionBranch="production"
+mainBranch="master"
+productionBranch="production"
 
 # Checkout the main branch
 git checkout $mainBranch

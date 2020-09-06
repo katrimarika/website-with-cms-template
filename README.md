@@ -6,25 +6,29 @@ The site is built with [Hugo](https://gohugo.io/) and the admin management UI wi
 
 ## Usage
 
-**DISCLAIMER**: instructions are written from memory and haven't been tested yet.
-
 1. Create your own repository with this project as a template by clicking `Use this template` button in the top part of this page.
-1. Set suitable values in `package.json` for name, version, license, description and so on.
-1. Set up environment variables: make a copy of `.env.sample` as `.env` and set the variables to match your project.
-1. Create branches for development and production, and for site development similar to "development" and "production" (matching the values you set in `.env`), e.g. `master`, `production`, `dev-content`, `dev-live`. Make sure the branches in the release script `scripts/release` are correct.
-1. Create a [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) to be able to edit the repository content via this projects admin page. Give it permission to access and edit repositories (`repo`). Store the value securely or later use.
+1. Get the content of the repository you just created to your own machine with `git clone git@github.com:<your-repo>.git`.
+1. Set suitable values in `package.json` for name, version, license, description and so on. To automatically update the values also in package-lock.json, run `npm install`. Remember to commit your changes.
+1. Create a separate branch for production (e.g. "production") to better control what gets published for everyone to see. Make sure the local branch is set to track the origin. Also, make sure the branch names in the release script `scripts/release` match yours.
+1. Create a [GitHub personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) to be able to edit the repository content via this project's admin page. Give it permission to access and edit repositories (permission "repo"). Store the value securely for later use.
 1. Set up the project in Netlify
    1. Sign in or sign up to the [Netlify management](https://app.netlify.com/).
    1. Select `New site from Git` and follow the instructions to set up, selecting your production branch (e.g. `production`) as the branch to deploy, setting `npm run build` as the build command and `build` as the publish directory.
-   1. Configure [your domain](https://docs.netlify.com/domains-https/custom-domains/#definitions) to match `DOMAIN_NAME` in `.env`. Or if you are not using a custom domain, you can change the name of the netlify app to produce a nicer url in `Settings` -> `General` -> `Site details` -> `Site information` -> `Site name` and set the domain from url displayed at the top of the page as your `DOMAIN_NAME`.
-   1. Set environment variables in `Site settings` -> `Build & Deploy` -> `Environment` similarly to your `.env` but with production values. Note that the `GITHUB_PROD_BRANCH` needs to be the branch you set as deploy branch in Netlify in the previous step.
-   1. [Enable Identity](https://docs.netlify.com/visitor-access/identity/#enable-identity-in-the-ui)) under the `Identity` tab and set it invite-only via `Settings and usage`. Send an invite to yourself.
-1. Sign up as an admin by finding the invitation in your email and clicking the link provided. After signing up, go to `Account` in your admin page and input the personal access token generated earlier.
+   1. Configure [your domain](https://docs.netlify.com/domains-https/custom-domains/#definitions). Or if you are not using a custom domain, you can change the name of the netlify app to produce a nicer url in `Settings` -> `General` -> `Site details` -> `Site information` -> `Site name` and take note of the domain displayed at the top of the page.
+   1. Set environment variables in `Site settings` -> `Build & Deploy` -> `Environment` similarly to those in `.env.sample` but with production values. Note that the `GITHUB_PROD_BRANCH` needs to be the branch you set as deploy branch in Netlify in the previous step and the `DOMAIN_NAME` match the domain displayed in Netlify.
+   1. [Enable Identity](https://docs.netlify.com/visitor-access/identity/#enable-identity-in-the-ui)) under the `Identity`.
+   1. Set Identity user registration to invite-only via `Settings and usage` -> `Identity` -> `Registration preferences`.
+   1. Set custom email templates to use correct urls in the emails in `Settings` -> `Identity` -> `Emails`. Enter the paths to the email templates (and subjects of your choice): `/admin/email-templates/invitation.html` and similarly for `confirmation`, `password-recovery` and `email-change`.
+   1. Send an invitation to yourself from the `Identity` tab.
+1. To take into use the environment variables set for the Netlify app, do a first release of your project by running the script `./scripts/release`. The script will prompt needed values. Wait for the deploy to finish: you can track the deploy in the `Deploys` tab in Netlify.
+1. Sign up as an admin by finding the invitation in your email and clicking the link provided. After signing up, go to `Account` in your admin page and input the personal access token generated earlier. Then, reload the page to make new requests with the token set (you will need to sign in again, but there you can set the browser to remember you).
 1. Now you can start adding content via the admin UI
+1. For local development, create development branches for "master" and "production", e.g. `dev-content`, `dev-live` and set up environment variables: make a copy of `.env.sample` as `.env` and set the variables to match your project's development values.
 1. Develop your project further using the development instructions below. E.g.
    - Create sections and other content layouts for your site following [hugo documentation](https://gohugo.io/documentation/), e.g. set up your own theme in `site/themes/<my-theme>` (remember to change the name in environment variables too)
    - Set your own color scheme and fonts for admin-side by editing css variable values in `src/ui/App.svelte` under `:root`
    - Customize the admin emails in `src/email-templates`
+   - Edit your README to match your project
 
 ## Development
 
@@ -46,6 +50,14 @@ npm start
 
 This runs a hugo development server serving files from `build` and sets up live reload for both hugo and svelte. The admin panel built from `src` folder and can be found at [/admin/](http://localhost:1313/admin/).
 
+To release, i.e. update version, tag and push to production branch (no local build required):
+
+```
+./scripts/release
+```
+
+### Additional commands
+
 You can add new content files with (it will prompt the needed info):
 
 ```
@@ -56,12 +68,6 @@ To test the production build locally:
 
 ```
 npm run build
-```
-
-To release, i.e. update version, tag and push to production branch (no local build required):
-
-```
-./scripts/release
 ```
 
 ## Notes
