@@ -4,6 +4,8 @@ A template project for a static website with an admin page for content managemen
 
 The site is built with [Hugo](https://gohugo.io/) and the admin management UI with [Svelte](https://svelte.dev/). Uses icons from [System UIcons](https://systemuicons.com/).
 
+[Admin UI demo](https://website-with-cms-demo.netlify.app/admin/)
+
 ## Usage
 
 1. Create your own repository with this project as a template by clicking `Use this template` button in the top part of this page.
