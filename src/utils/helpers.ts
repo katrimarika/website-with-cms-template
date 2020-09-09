@@ -72,7 +72,7 @@ export function encodeFileContents(
 ): string | undefined {
   try {
     // Make sure content has newline at end, base64 encode
-    return encode(value.replace(/[^\n]$/, '\n'));
+    return encode(!value.match(/\n$/) ? `${value}\n` : value);
   } catch (e) {
     onError('Failed to encode file contents.');
     return;
