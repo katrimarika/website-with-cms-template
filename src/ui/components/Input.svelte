@@ -90,7 +90,9 @@
       on:input={(e) => {
         const newVal = inputModifier(e.target.value);
         value = newVal;
-        e.target.value = newVal;
+        if (newVal !== e.target.value) {
+          e.target.value = newVal;
+        }
       }}
       {value}
       {disabled}
