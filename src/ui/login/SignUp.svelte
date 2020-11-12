@@ -95,21 +95,27 @@
       {#if !!$user}
         <Input
           id="email"
+          name="username"
           label="Email"
           type="email"
+          autocomplete="username"
           value={$user.email}
           disabled={true} />
       {/if}
       <Input
         id="password1"
-        label="Password"
+        name="new-password"
+        label="New password"
         type="password"
+        autocomplete="new-password"
         bind:value={password1}
         errorMessage={!!password1 && invalid ? 'Minimum length of 12 not satisfied.' : undefined} />
       <Input
         id="password2"
+        name="confirm-password"
         label="Confirm password"
         type="password"
+        autocomplete="new-password"
         bind:value={password2}
         errorMessage={!!password2 && noMatch ? 'The passwords need to match.' : undefined} />
       <div class="button-container">

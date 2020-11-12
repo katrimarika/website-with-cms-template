@@ -19,8 +19,8 @@
     }
   }
 
-  function fileChanged(e: Event & { target: HTMLInputElement }) {
-    const files = e.target.files;
+  function fileChanged(e: Event & { currentTarget: HTMLInputElement }) {
+    const files = e.currentTarget.files;
     if (files.length) {
       const file = files[0];
       if (
@@ -45,20 +45,20 @@
                 submitAlert.set(
                   fetchErrorMessage('Failed to upload image.', e)
                 );
-                e.target.value = '';
+                e.currentTarget.value = '';
                 loading = false;
               });
           })
           .catch((e) => {
             submitAlert.set(e);
-            e.target.value = '';
+            e.currentTarget.value = '';
             loading = false;
           });
       } else {
         submitAlert.set(
           `Invalid file: ${file.name} (${file.type}, ${file.size} B).`
         );
-        e.target.value = '';
+        e.currentTarget.value = '';
       }
     }
   }

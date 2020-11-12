@@ -7,6 +7,7 @@
   export let placeholder: string = undefined;
   export let disabled: boolean = undefined;
   export let required: boolean = undefined;
+  export let autocomplete: string = undefined;
   export let errorMessage: string = undefined;
   export let suffix: string = undefined;
   export let inputModifier: (s: string) => string = (s) => s;
@@ -86,12 +87,13 @@
       {name}
       {type}
       {placeholder}
+      {autocomplete}
       aria-errormessage={errorMessage}
       on:input={(e) => {
-        const newVal = inputModifier(e.target.value);
+        const newVal = inputModifier(e.currentTarget.value);
         value = newVal;
-        if (newVal !== e.target.value) {
-          e.target.value = newVal;
+        if (newVal !== e.currentTarget.value) {
+          e.currentTarget.value = newVal;
         }
       }}
       {value}

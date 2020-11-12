@@ -9,7 +9,7 @@
   export let errorMessage: string = undefined;
 
   export let onBlur: (
-    e: FocusEvent & { target: HTMLTextAreaElement }
+    e: FocusEvent & { currentTarget: HTMLTextAreaElement }
   ) => void = undefined;
 </script>
 

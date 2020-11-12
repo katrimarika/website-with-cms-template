@@ -112,16 +112,20 @@
       bind:value={accessKey} />
     <Input
       id="email"
+      name="username"
       label="Email"
       required={true}
       type="email"
+      autocomplete="username"
       bind:value={email}
       errorMessage={!!email && !emailValid ? 'Invalid email address.' : undefined} />
     <Input
       id="password"
+      name="password"
       label="Password"
       required={true}
       type="password"
+      autocomplete="current-password"
       bind:value={password} />
     <div class="buttons-container">
       <div class="button-container">

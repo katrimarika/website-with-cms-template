@@ -21,9 +21,9 @@
     )}`;
   }
 
-  function onBlur(e: FocusEvent & { target: HTMLTextAreaElement }) {
-    selectionStart = e.target.selectionStart;
-    selectionEnd = e.target.selectionEnd;
+  function onBlur(e: FocusEvent & { currentTarget: HTMLTextAreaElement }) {
+    selectionStart = e.currentTarget.selectionStart;
+    selectionEnd = e.currentTarget.selectionEnd;
   }
 </script>
 

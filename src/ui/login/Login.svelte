@@ -104,14 +104,18 @@
     <LoadingWrapper {loading}>
       <Input
         id="email"
+        name="username"
         label="Email"
         type="email"
+        autocomplete="username"
         bind:value={email}
         errorMessage={!!email && !emailValid ? 'Invalid email address.' : undefined} />
       <Input
         id="password"
+        name="password"
         label="Password"
         type="password"
+        autocomplete="current-password"
         bind:value={password} />
       <Checkbox label="Remember me" bind:checked={remember} />
       <div class="button-container">
