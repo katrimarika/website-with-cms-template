@@ -146,6 +146,7 @@ export function initApiClient(accessKey: string) {
         ? c.commit.message
         : ''
     );
+    const otherFiles: string[] = [];
     const relevantFiles = files.reduce((list, f) => {
       if (
         typeof f === 'object' &&
@@ -156,6 +157,8 @@ export function initApiClient(accessKey: string) {
           list.push(f.filename.replace('site/', ''));
         } else if (f.filename.startsWith('site/static/images/')) {
           list.push(f.filename.replace('site/static/', ''));
+        } else {
+          otherFiles.push(f.filename);
         }
       }
       return list;
@@ -170,6 +173,7 @@ export function initApiClient(accessKey: string) {
       commits: commitMessages,
       fileCount: files.length,
       contentFiles: relevantFiles,
+      otherFiles: otherFiles,
       baseCommitSha:
         !!base_commit && typeof base_commit.sha === 'string'
           ? base_commit.sha

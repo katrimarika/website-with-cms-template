@@ -38,7 +38,7 @@
     const notFastForward = status.behindBy > 0;
     if (notFastForward || otherFilesCount) {
       const notFastForwardMessage =
-        'The publish may not succees as the target is behind. Are you sure you want to try to publish anyway?';
+        'The publish may not succeed as the target is behind. Are you sure you want to try to publish anyway?';
       const otherFilesMessage = `The changes include ${otherFilesCount} modified file(s) outside content and images folders.`;
       confirmAlert.set({
         message:
@@ -56,7 +56,11 @@
 
   function revertChanges() {
     confirmAlert.set({
-      message: `Are you sure you want to revert changes in ${headBranch}?`,
+      message: `Are you sure you want to revert changes in ${headBranch}?${
+        otherFilesCount
+          ? ' This will revert all changes, including the changes to modified files outside the content and images folders.'
+          : ''
+      }`,
       onConfirm: () => {
         loading = true;
         commitStatus
@@ -131,23 +135,28 @@
         </ul>
       {:else}No commits{/if}
     </dd>
-    <dt>Files changed</dt>
+    <dt>Changed files in content and images</dt>
     <dd>
-      {#if status.fileCount}
+      <ul>
+        {#each status.contentFiles as f}
+          <li>{f}</li>
+        {:else}
+          <li>No changes</li>
+        {/each}
+      </ul>
+    </dd>
+    {#if otherFilesCount}
+      <dt>Other changed files</dt>
+      <dd>
         <ul>
-          {#each status.contentFiles as f}
+          {#each status.otherFiles as f}
             <li>{f}</li>
           {:else}
-            <li>No changed content files</li>
+            <li>No changed files outside content and images folders</li>
           {/each}
-          {#if otherFilesCount}
-            <li>
-              {`${otherFilesCount} file(s) outside content and images folders`}
-            </li>
-          {/if}
         </ul>
-      {:else}No files changed{/if}
-    </dd>
+      </dd>
+    {/if}
   </dl>
   <div class="buttons-container">
     {#if status.aheadBy}
@@ -161,7 +170,7 @@
           </Button>
         </div>
       {/if}
-      {#if status.baseCommitSha && !otherFilesCount}
+      {#if status.baseCommitSha}
         <div class="revert-container">
           <Button styleType="danger" onClick={revertChanges} disabled={loading}>
             Revert changes
