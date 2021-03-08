@@ -20,19 +20,38 @@
   $: otherFilesCount = status.fileCount - status.contentFiles.length;
 
   function publishChanges() {
-    loading = true;
-    commitStatus
-      .publish(status.latestCommitSha)
-      .then(() => {
-        submitAlert.set(`Successfully published changes to ${prodBranch}.`);
-        // Refetch status
-        commitStatus.fetchData();
-        loading = false;
-      })
-      .catch((e) => {
-        submitAlert.set(fetchErrorMessage('Failed to publish changes.', e));
-        loading = false;
+    const onConfirm = (withForce?: boolean) => {
+      loading = true;
+      commitStatus
+        .publish(status.latestCommitSha, withForce)
+        .then(() => {
+          submitAlert.set(`Successfully published changes to ${prodBranch}.`);
+          // Refetch status
+          commitStatus.fetchData();
+          loading = false;
+        })
+        .catch((e) => {
+          submitAlert.set(fetchErrorMessage('Failed to publish changes.', e));
+          loading = false;
+        });
+    };
+    const notFastForward = status.behindBy > 0;
+    if (notFastForward || otherFilesCount) {
+      const notFastForwardMessage =
+        'The publish may not succees as the target is behind. Are you sure you want to try to publish anyway?';
+      const otherFilesMessage = `The changes include ${otherFilesCount} modified file(s) outside content and images folders.`;
+      confirmAlert.set({
+        message:
+          otherFilesCount && notFastForward
+            ? `${otherFilesMessage} ${notFastForwardMessage}`
+            : notFastForward
+            ? notFastForwardMessage
+            : `${otherFilesMessage} Are you sure you want to publish the changes?`,
+        onConfirm: () => onConfirm(notFastForward),
       });
+    } else {
+      onConfirm();
+    }
   }
 
   function revertChanges() {
@@ -121,13 +140,17 @@
           {:else}
             <li>No changed content files</li>
           {/each}
-          <li>{`${otherFilesCount} non-content file(s)`}</li>
+          {#if otherFilesCount}
+            <li>
+              {`${otherFilesCount} file(s) outside content and images folders`}
+            </li>
+          {/if}
         </ul>
       {:else}No files changed{/if}
     </dd>
   </dl>
   <div class="buttons-container">
-    {#if status.aheadBy && !otherFilesCount}
+    {#if status.aheadBy}
       {#if status.latestCommitSha}
         <div class="publish-container">
           <Button
@@ -147,9 +170,7 @@
       {/if}
     {:else}
       <p>
-        <small>
-          {!status.aheadBy ? 'No changes to publish.' : 'You cannot publish or revert changes to other than content files.'}
-        </small>
+        <small>No changes to publish.</small>
       </p>
     {/if}
   </div>
