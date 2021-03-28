@@ -34,6 +34,7 @@ export type CommitStatus = {
   commits: string[];
   fileCount: number;
   contentFiles: string[];
+  otherFiles: string[];
   baseCommitSha: string;
   latestCommitSha: string;
 };

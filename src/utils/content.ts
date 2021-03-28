@@ -140,8 +140,8 @@ function initCommitStatus(apiClient: ApiClient) {
       );
   }
 
-  async function publish(sha: string) {
-    return apiClient.postUpdateBranch(prodBranch, sha).then(() => {
+  async function publish(sha: string, withForce?: boolean) {
+    return apiClient.postUpdateBranch(prodBranch, sha, withForce).then(() => {
       fetchData(); // refetch commit status
     });
   }
